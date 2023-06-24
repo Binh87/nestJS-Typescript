@@ -23,8 +23,8 @@ export class UsersService {
     return user;
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return await this.useModel.find().exec()
   }
 
   async findOne(id: string) {
@@ -32,10 +32,15 @@ export class UsersService {
     return await this.useModel.findOne({ _id: id });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+  // async update(id: string, updateUserDto: UpdateUserDto) {
+  //   if (!mongoose.Types.ObjectId.isValid(id)) return { msg: `Not update` };
 
+  //   return await this.useModel.updateOne({ _id: id }, { ...updateUserDto });
+  // }
+  async update( updateUserDto: UpdateUserDto) {
+    
+    return await this.useModel.updateOne({ _id: updateUserDto._id }, { ...updateUserDto });
+  }
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
