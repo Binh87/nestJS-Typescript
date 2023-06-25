@@ -24,12 +24,18 @@ export class UsersService {
   }
 
   async findAll() {
-    return await this.useModel.find().exec()
+    return await this.useModel.find().exec();
   }
 
   async findOne(id: string) {
     if (!mongoose.Types.ObjectId.isValid(id)) return { msg: `Not found user` };
     return await this.useModel.findOne({ _id: id });
+  }
+  async findOneByUsername(username: string) {
+    return await this.useModel.findOne({ email: username });
+  }
+  isValidPassword(pass: string, hash: string) {
+    return compareSync(pass, hash);
   }
 
   // async update(id: string, updateUserDto: UpdateUserDto) {
@@ -37,12 +43,14 @@ export class UsersService {
 
   //   return await this.useModel.updateOne({ _id: id }, { ...updateUserDto });
   // }
-  async update( updateUserDto: UpdateUserDto) {
-    
-    return await this.useModel.updateOne({ _id: updateUserDto._id }, { ...updateUserDto });
+  async update(updateUserDto: UpdateUserDto) {
+    return await this.useModel.updateOne(
+      { _id: updateUserDto._id },
+      { ...updateUserDto },
+    );
   }
   async remove(id: string) {
     if (!mongoose.Types.ObjectId.isValid(id)) return { msg: `Not found user` };
-    return await this.useModel.deleteOne({_id:id})
+    return await this.useModel.deleteOne({ _id: id });
   }
 }
