@@ -14,7 +14,6 @@ export class CompaniesService {
     private companyModel: SoftDeleteModel<CompanyDocument>,
   ) {}
   async create(createCompanyDto: CreateCompanyDto, user: IUser) {
-   
     return await this.companyModel.create({
       ...createCompanyDto,
       createdBy: {
@@ -25,18 +24,14 @@ export class CompaniesService {
   }
 
   async findAll() {
-    return  await this.companyModel.find().exec()
+    return await this.companyModel.find().exec();
   }
 
   findOne(id: number) {
     return `This action returns a #${id} company`;
   }
 
-  async update( id:string,updateCompanyDto: UpdateCompanyDto, user: IUser) {
-   
-  
- 
-  
+  async update(id: string, updateCompanyDto: UpdateCompanyDto, user: IUser) {
     return await this.companyModel.updateOne(
       { _id: id },
       {
@@ -49,7 +44,21 @@ export class CompaniesService {
     );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} company`;
+  async remove(id: string, user: IUser) {
+   
+    await this.companyModel.updateOne(
+      {
+        _id: id,
+      },
+      {
+        deletedBy: {
+          _id: user._id,
+          email: user.email,
+        },
+      },
+    );
+    return this.companyModel.softDelete({
+      _id: id,
+    });
   }
 }
