@@ -1,6 +1,5 @@
 import { Type } from 'class-transformer';
 import {
-  IsDefined,
   IsEmail,
   IsNotEmpty,
   IsNotEmptyObject,
@@ -25,22 +24,15 @@ export class RegisterUserDto {
 
   @IsNotEmpty({ message: 'Name ko dc de trong' })
   name: string;
+
   @IsNotEmpty({ message: 'Address ko dc de trong' })
   address: string;
+
   @IsNotEmpty({ message: 'Age ko dc de trong' })
   age: number;
+
   @IsNotEmpty({ message: 'Gender ko dc de trong' })
   gender: string;
-  @IsNotEmpty({ message: 'Role ko dc de trong' })
-  role: string;
- 
-
-  
-  @IsNotEmptyObject()
-  @IsObject()
-  @ValidateNested()
-  @Type(() => Company)
-  company: Company;
 }
 
 export class CreateUserDto {
