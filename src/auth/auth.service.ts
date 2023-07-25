@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IUser } from 'src/users/users.interface';
@@ -9,14 +10,14 @@ import { User, UserDocument } from 'src/users/schemas/user.schema';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { log } from 'console';
-
+import ms from 'ms';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-    
+    private configService: ConfigService,
   ) {}
   getHassPassword(password: string) {
     const salt = genSaltSync(10);
@@ -44,18 +45,29 @@ export class AuthService {
       email,
       role,
     };
+
+    const refresh_token = this.createRefreshToken(payload);
     return {
       access_token: this.jwtService.sign(payload),
-      _id,
-      name,
-      email,
-      role,
+      refresh_token,
+      user: {
+        _id,
+        name,
+        email,
+        role,
+      },
     };
   }
   async register(user: RegisterUserDto) {
-   
     let newUser = await this.usersService.register(user);
 
     return { _id: newUser?._id, createdAt: newUser?.createdAt };
   }
+  createRefreshToken = (payload: any) => {
+    return this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('JWT_REFRESH_TOKEN_SECRET'),
+      expiresIn:
+        ms(this.configService.get<string>('JWT_REFRESH_EXPIRE')) / 1000,
+    });
+  };
 }
