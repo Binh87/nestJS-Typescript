@@ -35,7 +35,7 @@ export class UsersService {
       age,
       gender,
       address,
-      role,
+      role: 'USER',
       company,
       createdBy: {
         _id: user._id,
@@ -138,4 +138,11 @@ export class UsersService {
 
     return newRegister;
   }
+  async updateUserToken(refresh_token: string, _id: string) {
+    return await this.userModel.updateOne({ _id }, { refresh_token });
+  }
+  async findUserByToken(refresh_token:string) {
+    return await this.userModel.findOne({ refresh_token });
+  }
+  
 }

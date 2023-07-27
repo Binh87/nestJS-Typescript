@@ -33,6 +33,9 @@ export class RegisterUserDto {
 
   @IsNotEmpty({ message: 'Gender ko dc de trong' })
   gender: string;
+
+  @IsNotEmpty({ message: 'Role ko dc de trong' })
+  role: string;
 }
 
 export class CreateUserDto {
@@ -53,6 +56,8 @@ export class CreateUserDto {
   gender: string;
   @IsNotEmpty({ message: 'Role ko dc de trong' })
   role: string;
+
+
 
   @IsNotEmptyObject()
   @IsObject()

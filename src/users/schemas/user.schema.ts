@@ -13,7 +13,7 @@ export class User {
   email: string;
 
   // @Prop({ required: true, select: false })
-  @Prop({ required: true})
+  @Prop({ required: true })
   password: string;
 
   @Prop()
@@ -24,6 +24,12 @@ export class User {
 
   @Prop()
   address: string;
+
+  @Prop()
+  refresh_token: string;
+
+  @Prop()
+  role: string;
 
   @Prop({ type: Object })
   company: {
