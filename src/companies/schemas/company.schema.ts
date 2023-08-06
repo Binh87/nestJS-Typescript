@@ -27,7 +27,9 @@ export class Company {
     _id: mongoose.Schema.Types.ObjectId;
     email: string;
   };
-
+  @Prop()
+  logo:string
+  
   @Prop()
   createdAt: Date;
   @Prop()
