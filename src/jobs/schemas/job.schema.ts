@@ -37,6 +37,7 @@ export class Job {
   company: {
     _id: mongoose.Schema.Types.ObjectId;
     name: string;
+    logo:string
   };
   @Prop({ type: Object })
   createdBy: {
@@ -61,6 +62,8 @@ export class Job {
   isDeleted: boolean;
   @Prop()
   deletedAt: Date;
+  @Prop()
+  location:string
 }
 
 export const JobSchema = SchemaFactory.createForClass(Job);

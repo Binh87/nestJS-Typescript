@@ -1,5 +1,5 @@
 import { Transform, Type } from "class-transformer";
-import { IsArray, IsBoolean, IsDate, IsNotEmpty, IsNotEmptyObject, IsObject, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsBoolean, IsDate, IsEmpty, IsNotEmpty, IsNotEmptyObject, IsObject, IsString, ValidateNested } from "class-validator";
 import mongoose, { Date } from "mongoose";
 
 class Company {
@@ -7,6 +7,8 @@ class Company {
   _id: mongoose.Schema.Types.ObjectId;
   @IsNotEmpty()
   name: string;
+  @IsNotEmpty()
+  logo: string;
 }
 export class CreateJobDto {
   @IsNotEmpty({ message: 'Name ko dc de trong' })
@@ -30,6 +32,9 @@ export class CreateJobDto {
   @IsNotEmpty({ message: 'Description ko dc de trong' })
   description: string;
 
+  @IsNotEmpty({message:'Location ko dc de trong'})
+  location:string
+
   @IsNotEmpty({ message: 'StartDate ko dc de trong' })
   @Transform(({ value }) => new Date(value))
   @IsDate({ message: 'StartDate co dinh dang la Date ' })
@@ -49,4 +54,6 @@ export class CreateJobDto {
   @ValidateNested()
   @Type(() => Company)
   company: Company;
+
+  
 }
